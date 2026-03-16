@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestra Boda - Invitación Completa</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;600&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <script async defer src="//assets.pinterest.com/js/pinit.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <style>
+        :root {
+            --dorado: #b8926a;
+            --crema: #fdfaf6;
+            --oscuro: #333;
+            --blanco: #ffffff;
+        }
+
+        * { box-sizing: border-box; }
+        body, html { 
+            margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; 
+            background-color: var(--crema); color: var(--oscuro); 
+            scroll-behavior: smooth; overflow-x: hidden;
+        }
+
+        /* --- 1. MENÚ HAMBURGUESA --- */
+        .menu-btn {
+            position: fixed; top: 20px; right: 20px; z-index: 2500;
+            background: var(--blanco); border-radius: 50%; width: 50px; height: 50px;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-size: 1.5rem;
+        }
+        .nav-overlay {
+            position: fixed; top: 0; right: -100%; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.98); z-index: 2000;
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .nav-overlay.active { right: 0; }
+        .nav-overlay a {
+            font-family: 'Cormorant Garamond', serif; font-size: 2.2rem;
+            color: var(--oscuro); text-decoration: none; margin: 15px 0; transition: 0.3s;
+        }
+        .nav-overlay a:hover { color: var(--dorado); transform: scale(1.1); }
+
+        /* --- 2. SOBRE DE BIENVENIDA --- */
+        #envelope-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--blanco); z-index: 3000;
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; transition: 1.2s cubic-bezier(0.8, 0, 0.2, 1);
+        }
+        .seal { width: 120px; cursor: pointer; transition: 0.3s; }
+        .seal:hover { transform: scale(1.1) rotate(5deg); }
+
+        /* --- 3. SECCIONES Y ANIMACIONES --- */
+        section { padding: 80px 20px; text-align: center; max-width: 900px; margin: auto; }
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        h1, h2 { font-family: 'Cormorant Garamond', serif; color: var(--dorado); }
+        h1 { font-size: 4rem; margin-bottom: 0; }
+        h2 { font-size: 2.5rem; border-bottom: 1px solid var(--dorado); display: inline-block; padding-bottom: 5px; margin-bottom: 30px; }
+
+        /* --- 4. CONTADOR --- */
+        .timer-container { display: flex; justify-content: center; gap: 15px; margin: 30px 0; }
+        .timer-box { background: var(--blanco); padding: 15px; border-radius: 10px; min-width: 75px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .timer-box span { display: block; font-size: 1.8rem; font-weight: bold; color: var(--dorado); }
+
+        /* --- 5. GALERÍA SWIPER (Interactive) --- */
+        .swiper { width: 100%; max-width: 400px; height: 500px; padding: 20px; }
+        .swiper-slide { 
+            background: white; padding: 15px 15px 40px 15px; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-radius: 2px;
+        }
+        .swiper-slide img { width: 100%; height: 85%; object-fit: cover; }
+
+        /* --- 6. REGALOS Y PINTEREST --- */
+        .gift-container { display: flex; flex-direction: column; gap: 10px; }
+        .gift-card {
+            background: white; padding: 20px; border-radius: 10px; text-decoration: none;
+            color: var(--oscuro); border: 1px solid #eee; display: flex; align-items: center; justify-content: center;
+            transition: 0.3s;
+        }
+        .gift-card:hover { transform: translateY(-5px); border-color: var(--dorado); }
+        .gift-card img { height: 25px; margin-right: 15px; }
+
+        .pinterest-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 10px; }
+
+        /* --- 7. FORMULARIO RSVP --- */
+        .rsvp-card { background: white; padding: 40px 20px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        input, select, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; }
+        .btn-enviar { background: var(--dorado); color: white; border: none; padding: 15px; width: 100%; border-radius: 30px; cursor: pointer; font-size: 1rem; margin-top: 10px; }
+
+        @media (max-width: 600px) { h1 { font-size: 2.8rem; } section { padding: 60px 15px; } }
+    </style>
+</head>
+<body>
+
+    <div class="menu-btn" onclick="toggleMenu()">☰</div>
+    <nav class="nav-overlay" id="nav">
+        <a href="#hero" onclick="toggleMenu()">Inicio</a>
+        <a href="#galeria" onclick="toggleMenu()">Nuestra Historia</a>
+        <a href="#vestimenta" onclick="toggleMenu()">Dress Code</a>
+        <a href="#ubicacion" onclick="toggleMenu()">Ubicación</a>
+        <a href="#mesa-regalos" onclick="toggleMenu()">Regalos</a>
+        <a href="#rsvp" onclick="toggleMenu()">Confirmar</a>
+    </nav>
+
+    <div id="envelope-overlay">
+        <h2 style="font-weight: 300; border: none;">¡Bienvenidos!</h2>
+        <div class="seal" onclick="abrirInvitacion()">
+            <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#8b1e1e" /><text x="50" y="60" text-anchor="middle" fill="white" font-family="serif" font-size="22">C&V</text></svg>
+        </div>
+        <p style="margin-top: 20px; letter-spacing: 2px;">TOCA PARA ABRIR</p>
+    </div>
+
+    <section id="hero">
+        <h1 class="reveal">Cyn & Val</h1>
+        <p class="reveal" style="letter-spacing: 4px;">NOS CASAMOS EL 26.12.2026</p>
+        
+        <div class="timer-container reveal">
+            <div class="timer-box"><span id="months">00</span>Meses</div>
+            <div class="timer-box"><span id="days">00</span>Días</div>
+            <div class="timer-box"><span id="hours">00</span>Hr</div>
+            <div class="timer-box"><span id="minutes">00</span>Min</div>
+        </div>
+    </section>
+
+    <section id="galeria" class="reveal">
+        <h2>Nuestra Historia</h2>
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <img src="/img/1.jpg" alt="1">
+                </div>
+                <div class="swiper-slide">
+                    <img src="/img/3.jpg" alt="3">
+                </div>
+                <div class="swiper-slide">
+                    <img src="/img/4.jpg" alt="4">
+                </div>
+                <div class="swiper-slide">
+                    <img src="/img/5.jpg" alt="5">
+                </div>
+                <div class="swiper-slide">
+                    <img src="/img/6.jpg" alt="6">
+                </div>
+                <div class="swiper-slide">
+                    <img src="/img/7.jpg" alt="7">
+                </div>
+                <div class="swiper-slide">
+                    <img src="/img/8.jpg" alt="8">
+                </div>
+                <div class="swiper-slide">
+                    <img src="/img/9.jpg" alt="9">
+                </div>
+                <div class="swiper-slide">
+                    <img src="/img/10.jpg" alt="10">
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="vestimenta" class="reveal">
+        <h2>Código de Vestimenta</h2>
+        <p>Inspiración para tu outfit (Formal / Cocktail)</p>
+        <div class="pinterest-wrapper">
+            <a data-pin-do="embedBoard" data-pin-board-width="auto" data-pin-scale-height="400" data-pin-scale-width="80" href="https://mx.pinterest.com/edithpema/wedding-inspo-outfit"></a>
+        </div>
+    </section>
+
+    <section id="ubicacion" class="reveal">
+        <h2>Ubicación</h2>
+        <p>Santuario del Sagrado Corazón, León, Gto.</p>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3721.0543265780516!2d-101.681143!3d21.150242!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x842bbe074c6d371d%3A0x6b160b777a80b07e!2sSantuario%20del%20Sagrado%20Coraz%C3%B3n!5e0!3m2!1ses!2smx!4v1700000000000" width="100%" height="350" style="border:0; border-radius: 15px;" allowfullscreen="" loading="lazy"></iframe>
+    </section>
+
+    <section id="mesa-regalos" class="reveal">
+        <h2>Mesa de Regalos</h2>
+        <div class="gift-container">
+            <a href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/51971551" target="_blank" class="gift-card">
+                <img src="https://www.tauro.mx/wp-content/uploads/2017/01/liverpool-logo.jpg"> Liverpool (ID: 51971551)
+            </a>
+            <a href="https://www.amazon.com.mx/wedding/guest-view/18BMN2KGYZ47J" target="_blank" class="gift-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg"> Mesa Amazon
+            </a>
+            <div class="gift-card" style="cursor: pointer;" onclick="alert('CLABE: 0123 4567 8910 1112 \nBBVA \nA nombre de: Brian & Megan')">
+                <img src="https://cdn-icons-png.flaticon.com/512/2489/2489756.png"> Regalo en Efectivo
+            </div>
+        </div>
+    </section>
+
+    <section id="rsvp" class="reveal">
+        <div class="rsvp-card">
+            <h2>Confirmar Asistencia</h2>
+            <form id="rsvpForm">
+                <input type="text" id="nombre" placeholder="Nombre completo" required>
+                <select id="asistencia">
+                    <option value="Si">¡Sí, ahí estaré!</option>
+                    <option value="No">No podré ir</option>
+                </select>
+                <textarea id="mensaje" placeholder="Alergias o mensaje para los novios"></textarea>
+                <button type="submit" class="btn-enviar" id="btnEnviar">Confirmar Asistencia</button>
+            </form>
+            <p id="success-msg" style="display:none; color: green; margin-top:20px;">¡Gracias! Tu respuesta ha sido registrada.</p>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        // 1. Abrir Invitación
+        function abrirInvitacion() {
+            document.getElementById('envelope-overlay').style.transform = 'translateY(-100%)';
+            reveal(); // Disparar animaciones iniciales
+        }
+
+        // 2. Menú Hamburguesa
+        function toggleMenu() {
+            document.getElementById('nav').classList.toggle('active');
+        }
+
+        // 3. Galería Interactiva (Swiper)
+        const swiper = new Swiper(".mySwiper", {
+            effect: "cards",
+            grabCursor: true,
+        });
+
+        // 4. Contador
+        const targetDate = new Date("December 26, 2026 16:00:00").getTime();
+        setInterval(() => {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            if (diff <= 0) {
+                document.getElementById('cuenta-regresiva').innerHTML = "<h2>¡Llegó el gran día!</h2>";
+                return;
+            }
+
+            const msPorMinuto = 1000 * 60;
+            const msPorHora = msPorMinuto * 60;
+            const msPorDia = msPorHora * 24;
+            const msPorMes = msPorDia * 30.44; 
+
+            const meses = Math.floor(diff / msPorMes);
+            const dias = Math.floor((diff % msPorMes) / msPorDia);
+            const horas = Math.floor((diff % msPorDia) / msPorHora);
+            const minutos = Math.floor((diff % msPorHora) / msPorMinuto);
+
+            // Inyectar solo lo necesario
+            if(document.getElementById('months')) document.getElementById('months').innerText = meses;
+            if(document.getElementById('days')) document.getElementById('days').innerText = dias;
+            if(document.getElementById('hours')) document.getElementById('hours').innerText = horas;
+            if(document.getElementById('minutes')) document.getElementById('minutes').innerText = minutos;
+
+        }, 1000);
+
+        // 6. Enviar a Google Sheets
+        const scriptURL = 'TU_URL_DE_APPS_SCRIPT'; // <--- Pon tu URL aquí
+        const form = document.getElementById('rsvpForm');
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const btn = document.getElementById('btnEnviar');
+            btn.innerText = "Registrando...";
+            fetch(scriptURL, { 
+                method: 'POST', 
+                mode: 'no-cors', 
+                body: JSON.stringify({
+                    nombre: document.getElementById('nombre').value,
+                    asistencia: document.getElementById('asistencia').value,
+                    mensaje: document.getElementById('mensaje').value
+                })
+            })
+            .then(() => {
+                document.getElementById('success-msg').style.display = 'block';
+                form.reset();
+                btn.innerText = "Confirmar Asistencia";
+            });
+        });
+        // 7. Lógica de Scroll Reveal (Esto es lo que falta para que aparezca el contenido)
+        function reveal() {
+            const reveals = document.querySelectorAll(".reveal");
+            for (let i = 0; i < reveals.length; i++) {
+                let windowHeight = window.innerHeight;
+                let elementTop = reveals[i].getBoundingClientRect().top;
+                let elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        
+        // Activa la escucha del scroll
+        window.addEventListener("scroll", reveal);
+    </script>
+</body>
+</html>
