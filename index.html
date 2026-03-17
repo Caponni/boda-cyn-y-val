@@ -224,14 +224,15 @@
         }
 
         const swiper = new Swiper(".mySwiper", {
-            effect: "cards",
-            grabCursor: true,
-            touchStartPreventDefault: false,
-            nested: true
-            mousewheel: {
-                invert: false,
-            },
-        });
+                    effect: "cards",
+                    grabCursor: true,
+                    nested: true,
+                    touchStartPreventDefault: false,
+                    // Configuración correcta del mousewheel:
+                    mousewheel: {
+                        invert: false,
+                    }
+                });
 
         const targetDate = new Date("December 26, 2026 12:00:00").getTime();
         setInterval(() => {
