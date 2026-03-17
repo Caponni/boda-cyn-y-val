@@ -16,15 +16,32 @@
             --oscuro: #333;
             --blanco: #ffffff;
         }
+        
+        .mySwiper {
+            /* Permite que el scroll vertical pase a través de la galería */
+            touch-action: pan-y !important; 
+            overflow: visible !important;
+        }
+        
+        .swiper-slide {
+            /* Evita que las fotos individuales bloqueen el movimiento */
+            touch-action: pan-y !important;
+        }
 
         * { box-sizing: border-box; }
         body, html { 
-            margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; 
-            background-color: var(--crema); color: var(--oscuro); 
-            scroll-behavior: smooth; overflow-x: hidden;
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: var(--crema); 
+            color: var(--oscuro); 
+            scroll-behavior: smooth; 
+            
+            /* Solución para el scroll trabado */
             overflow-x: hidden;
             overflow-y: auto !important;
-            touch-action: manipulation; /* Optimiza el toque para scroll */
+            touch-action: pan-y !important; /* Permite scroll vertical libre */
+            -webkit-overflow-scrolling: touch; /* Hace que el scroll en iPhone sea fluido */
         }
 
         /* --- 1. MENÚ HAMBURGUESA --- */
@@ -238,12 +255,15 @@
         }
     
         // 3. Galería Interactiva (Swiper) - OPTIMIZADA
-      const swiper = new Swiper(".mySwiper", {
-            effect: "cards",
-            grabCursor: true,
-            // Esto permite que si deslizas hacia arriba/abajo sobre las fotos, el sitio haga scroll
-            touchStartPreventDefault: false 
-        });
+        const swiper = new Swiper(".mySwiper", {
+                effect: "cards",
+                grabCursor: true,
+                // ESTO ES LO QUE LIBERA EL SCROLL:
+                touchStartPreventDefault: false, 
+                passiveListeners: true,
+                allowTouchMove: true,
+                nested: true
+            });
     
         // 4. Contador (Meses, Días, Horas, Minutos)
         const targetDate = new Date("March 29, 2026 16:00:00").getTime();
@@ -287,18 +307,18 @@
         }
     
         // 6. Scroll Reveal
-    function reveal() {
-        const reveals = document.querySelectorAll(".reveal");
-        for (let i = 0; i < reveals.length; i++) {
-            let windowHeight = window.innerHeight;
-            let elementTop = reveals[i].getBoundingClientRect().top;
-            
-            // Si la parte superior del elemento entra un poco en pantalla, se muestra
-            if (elementTop < windowHeight - 50) {
-                reveals[i].classList.add("active");
+        function reveal() {
+            const reveals = document.querySelectorAll(".reveal");
+            for (let i = 0; i < reveals.length; i++) {
+                let windowHeight = window.innerHeight;
+                let elementTop = reveals[i].getBoundingClientRect().top;
+                
+                // Se activa apenas asoma 20px en pantalla (casi instantáneo)
+                if (elementTop < windowHeight - 20) { 
+                    reveals[i].classList.add("active");
+                }
             }
         }
-    }
 
     // Escucha el scroll de forma natural
     window.addEventListener("scroll", reveal);
