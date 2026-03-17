@@ -88,6 +88,14 @@
             border: 1px solid #eee; /* Un borde mínimo para separar la foto del papel blanco */
         }
 
+        /* Esto hace que las fotos se vean ligeramente giradas, una hacia cada lado */
+        .swiper-slide:nth-child(odd) {
+            transform: rotate(-2deg);
+        }
+        .swiper-slide:nth-child(even) {
+            transform: rotate(2deg);
+        }
+
         /* 6. Mesa de Regalos y Formulario */
         .gift-container, #rsvpForm { 
             display: flex; flex-direction: column; 
