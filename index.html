@@ -88,7 +88,7 @@
         /* --- 6. REGALOS Y PINTEREST --- */
         .gift-container { display: flex; flex-direction: column; gap: 10px; }
         .gift-card {
-            background: white; padding: 20px; border-radius: 10px; text-decoration: none;
+            background: white; padding: 20px; border-radius: 10px; text-decoration: none; min-height: 500px;
             color: var(--oscuro); border: 1px solid #eee; display: flex; align-items: center; justify-content: center;
             transition: 0.3s;
         }
@@ -287,22 +287,23 @@
                 btn.innerText = "Confirmar Asistencia";
             });
         });
-        // 7. Lógica de Scroll Reveal (Esto es lo que falta para que aparezca el contenido)
-        function reveal() {
-            const reveals = document.querySelectorAll(".reveal");
-            for (let i = 0; i < reveals.length; i++) {
-                let windowHeight = window.innerHeight;
-                let elementTop = reveals[i].getBoundingClientRect().top;
-                
-                // CAMBIO 1: Bajamos el valor de 100 a 50 para que no 
-                // necesites hacer tanto scroll para que aparezca la sección.
-                let elementVisible = 50; 
-        
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add("active");
-                }
+        // 7. Lógica de Scroll Reveal (Esto es lo que falta para que aparezca el contenido)function reveal() {
+        const reveals = document.querySelectorAll(".reveal");
+        const triggerBottom = window.innerHeight * 0.9; // Se activa cuando la sección está casi en pantalla
+    
+        reveals.forEach(box => {
+            const boxTop = box.getBoundingClientRect().top;
+            if (boxTop < triggerBottom) {
+                box.classList.add("active");
             }
-        }
+        });
+    }
+    
+    // Usamos un optimizador para que el scroll no se sienta pesado
+    let isScrolling;
+    window.addEventListener("scroll", () => {
+        window.requestAnimationFrame(reveal);
+    }, { passive: true });
 
 // CAMBIO 2: Agregamos { passive: true } para que el celular no se "trabé"
 window.addEventListener("scroll", reveal, { passive: true });
