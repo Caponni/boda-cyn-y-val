@@ -283,13 +283,19 @@
             for (let i = 0; i < reveals.length; i++) {
                 let windowHeight = window.innerHeight;
                 let elementTop = reveals[i].getBoundingClientRect().top;
-                let elementVisible = 100;
+                
+                // CAMBIO 1: Bajamos el valor de 100 a 50 para que no 
+                // necesites hacer tanto scroll para que aparezca la sección.
+                let elementVisible = 50; 
+        
                 if (elementTop < windowHeight - elementVisible) {
                     reveals[i].classList.add("active");
                 }
             }
         }
-        
+
+// CAMBIO 2: Agregamos { passive: true } para que el celular no se "trabé"
+window.addEventListener("scroll", reveal, { passive: true });
         // Activa la escucha del scroll
         window.addEventListener("scroll", reveal);
     </script>
