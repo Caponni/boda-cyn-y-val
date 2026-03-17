@@ -223,60 +223,69 @@
             document.getElementById('nav').classList.toggle('active');
         }
 
-        const swiper = new Swiper(".mySwiper", {
-                    effect: "cards",
-                    grabCursor: true,
-                    nested: true,
-                    touchStartPreventDefault: false,
-                    // Configuración correcta del mousewheel:
-                    mousewheel: {
-                        invert: false,
+         // 3. Galería Interactiva (Swiper) - CORREGIDA
+            const swiper = new Swiper(".mySwiper", {
+                effect: "cards",
+                grabCursor: true,
+                nested: true,
+                touchStartPreventDefault: false,
+                mousewheel: {
+                    invert: false,
+                }
+            }); // <-- Aquí estaba el error, ahora está cerrado correctamente
+        
+            // 4. Contador
+            const targetDate = new Date("December 26, 2026 12:00:00").getTime();
+            setInterval(() => {
+                const now = new Date().getTime();
+                const diff = targetDate - now;
+                if (diff <= 0) return;
+        
+                const msPorMinuto = 1000 * 60;
+                const msPorHora = msPorMinuto * 60;
+                const msPorDia = msPorHora * 24;
+                const msPorMes = msPorDia * 30.44; 
+        
+                document.getElementById('months').innerText = Math.floor(diff / msPorMes);
+                document.getElementById('days').innerText = Math.floor((diff % msPorMes) / msPorDia);
+                document.getElementById('hours').innerText = Math.floor((diff % msPorDia) / msPorHora);
+                document.getElementById('minutes').innerText = Math.floor((diff % msPorHora) / msPorMinuto);
+            }, 1000);
+        
+            // 5. Confirmación Google Sheets (RSVP)
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbzHZcpa5n1BsYfTxwb1bFEaGplSf-5NsqHawoOiCMrlQ9Id7z9r-arZUN246YVz0qrm6w/exec';
+            const form = document.getElementById('rsvpForm');
+            
+            form.addEventListener('submit', e => {
+                e.preventDefault();
+                const btn = document.getElementById('btnEnviar');
+                btn.innerText = "Registrando...";
+                
+                // Enviamos los datos del formulario
+                fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                    .then(response => {
+                        document.getElementById('success-msg').style.display = 'block';
+                        form.reset();
+                        btn.innerText = "Confirmar Asistencia";
+                    })
+                    .catch(error => {
+                        console.error('Error!', error.message);
+                        btn.innerText = "Error al enviar";
+                    });
+            });
+        
+            // 6. Scroll Reveal
+            function reveal() {
+                const reveals = document.querySelectorAll(".reveal");
+                reveals.forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight - 50) {
+                        el.classList.add("active");
                     }
                 });
-
-        const targetDate = new Date("December 26, 2026 12:00:00").getTime();
-        setInterval(() => {
-            const now = new Date().getTime();
-            const diff = targetDate - now;
-            if (diff <= 0) return;
-
-            const msPorMinuto = 1000 * 60;
-            const msPorHora = msPorMinuto * 60;
-            const msPorDia = msPorHora * 24;
-            const msPorMes = msPorDia * 30.44; 
-
-            document.getElementById('months').innerText = Math.floor(diff / msPorMes);
-            document.getElementById('days').innerText = Math.floor((diff % msPorMes) / msPorDia);
-            document.getElementById('hours').innerText = Math.floor((diff % msPorDia) / msPorHora);
-            document.getElementById('minutes').innerText = Math.floor((diff % msPorHora) / msPorMinuto);
-        }, 1000);
-
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzHZcpa5n1BsYfTxwb1bFEaGplSf-5NsqHawoOiCMrlQ9Id7z9r-arZUN246YVz0qrm6w/exec';
-        const form = document.getElementById('rsvpForm');
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            const btn = document.getElementById('btnEnviar');
-            btn.innerText = "Registrando...";
-            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-                .then(response => {
-                    document.getElementById('success-msg').style.display = 'block';
-                    form.reset();
-                    btn.innerText = "Confirmar Asistencia";
-                })
-                .catch(error => console.error('Error!', error.message));
-        });
-
-        function reveal() {
-            const reveals = document.querySelectorAll(".reveal");
-            reveals.forEach(el => {
-                const rect = el.getBoundingClientRect();
-                if (rect.top < window.innerHeight - 50) {
-                    el.classList.add("active");
-                }
-            });
-        }
-        window.addEventListener("scroll", reveal, { passive: true });
-        window.onload = reveal;
+            }
+            window.addEventListener("scroll", reveal, { passive: true });
+            window.onload = reveal;
     </script>
 </body>
 </html>
