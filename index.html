@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuestra Boda - Invitación Completa</title>
+    <title>Nuestra Boda - Cyn & Val</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;600&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
     <script async defer src="//assets.pinterest.com/js/pinit.js"></script>
@@ -16,107 +16,82 @@
             --oscuro: #333;
             --blanco: #ffffff;
         }
- body, html { 
-            margin: 0; 
-            padding: 0; 
+
+        /* 1. Estructura y Scroll */
+        body, html { 
+            margin: 0; padding: 0; 
             font-family: 'Montserrat', sans-serif; 
             background-color: var(--crema); 
             color: var(--oscuro); 
             scroll-behavior: smooth; 
             overflow-x: hidden;
-            /* Liberamos el scroll vertical totalmente */
-            touch-action: pan-y !important; 
-            -webkit-overflow-scrolling: touch;
-        }
-        .mySwiper, .swiper-slide, .swiper-wrapper {
             touch-action: pan-y !important;
         }
-        
-        .reveal {
-            opacity: 0;
-            transition: opacity 0.8s ease-in;
-            will-change: opacity;
-        }
-        
-        .reveal.active {
-            opacity: 1;
-        }
 
-        /* --- 1. MENÚ HAMBURGUESA --- */
-        .menu-btn {
-            position: fixed; top: 20px; right: 20px; z-index: 2500;
-            background: var(--blanco); border-radius: 50%; width: 50px; height: 50px;
-            display: flex; justify-content: center; align-items: center;
-            cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-size: 1.5rem;
-        }
-        .nav-overlay {
-            position: fixed; top: 0; right: -100%; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.98); z-index: 2000;
-            display: flex; flex-direction: column; justify-content: center;
-            align-items: center; transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-        }
-        .nav-overlay.active { right: 0; }
-        .nav-overlay a {
-            font-family: 'Cormorant Garamond', serif; font-size: 2.2rem;
-            color: var(--oscuro); text-decoration: none; margin: 15px 0; transition: 0.3s;
-        }
-        .nav-overlay a:hover { color: var(--dorado); transform: scale(1.1); }
+        section { padding: 60px 20px; text-align: center; }
 
-        /* --- 2. SOBRE DE BIENVENIDA --- */
+        /* 2. Sobre (Overlay) */
         #envelope-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--blanco); z-index: 3000;
-            display: flex; flex-direction: column; justify-content: center;
-            align-items: center; transition: 1.2s cubic-bezier(0.8, 0, 0.2, 1);
+            background: #f4f1ea; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 2000;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .seal { width: 120px; cursor: pointer; transition: 0.3s; }
-        .seal:hover { transform: scale(1.1) rotate(5deg); }
+        .seal { cursor: pointer; width: 100px; transition: transform 0.3s; }
+        .seal:hover { transform: scale(1.1); }
 
-        /* --- 3. SECCIONES Y ANIMACIONES --- */
-        section { padding: 80px 20px; text-align: center; max-width: 900px; margin: auto; }
-           .reveal {
-                position: relative;
-                opacity: 0;
-                transform: translateY(30px); /* Reducimos de 50px a 30px */
-                transition: all 0.8s ease-out; /* Más rápido y suave */
-                will-change: transform, opacity; /* Ayuda al cel a procesar mejor */
+        /* 3. Menú */
+        .menu-btn {
+            position: fixed; top: 20px; right: 20px; z-index: 1001;
+            font-size: 24px; cursor: pointer; background: white;
+            padding: 8px 12px; border-radius: 50%; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-
-        h1, h2 { font-family: 'Cormorant Garamond', serif; color: var(--dorado); }
-        h1 { font-size: 4rem; margin-bottom: 0; }
-        h2 { font-size: 2.5rem; border-bottom: 1px solid var(--dorado); display: inline-block; padding-bottom: 5px; margin-bottom: 30px; }
-
-        /* --- 4. CONTADOR --- */
-        .timer-container { display: flex; justify-content: center; gap: 15px; margin: 30px 0; }
-        .timer-box { background: var(--blanco); padding: 15px; border-radius: 10px; min-width: 75px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .timer-box span { display: block; font-size: 1.8rem; font-weight: bold; color: var(--dorado); }
-
-        /* --- 5. GALERÍA SWIPER (Interactive) --- */
-        .swiper { width: 100%; max-width: 400px; height: 500px; padding: 20px; }
-        .swiper-slide { 
-            background: white; padding: 15px 15px 40px 15px; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-radius: 2px;
+        .nav-overlay {
+            position: fixed; top: 0; right: -100%; width: 250px; height: 100%;
+            background: white; z-index: 1000; transition: 0.4s;
+            display: flex; flex-direction: column; padding: 80px 20px;
         }
-        .swiper-slide img { width: 100%; height: 85%; object-fit: cover; }
+        .nav-overlay.active { right: 0; }
+        .nav-overlay a { text-decoration: none; color: var(--oscuro); margin: 15px 0; font-size: 18px; }
 
-        /* --- 6. REGALOS Y PINTEREST --- */
-        .gift-container { display: flex; flex-direction: column; gap: 10px; }
+        /* 4. Contador Mejorado */
+        .timer-container {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 10px; max-width: 400px; margin: 30px auto;
+            padding: 20px; background: white; border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .timer-box { display: flex; flex-direction: column; font-size: 12px; color: var(--dorado); }
+        .timer-box span { font-size: 24px; font-weight: bold; color: var(--oscuro); }
+
+        /* 5. Galería Pequeña */
+        .swiper { width: 280px; height: 380px; margin: 20px auto; touch-action: pan-y !important; }
+        .swiper-slide img { width: 100%; height: 100%; object-fit: cover; border-radius: 15px; }
+
+        /* 6. Mesa de Regalos y Formulario */
+        .gift-container, #rsvpForm { 
+            display: flex; flex-direction: column; 
+            gap: 15px; max-width: 320px; margin: 0 auto; 
+        }
         .gift-card {
-            background: white; padding: 20px; border-radius: 10px; text-decoration: none; min-height: 500px;
-            color: var(--oscuro); border: 1px solid #eee; display: flex; align-items: center; justify-content: center;
-            transition: 0.3s;
+            background: white; padding: 15px; border-radius: 12px;
+            text-decoration: none; color: var(--oscuro); font-size: 14px;
+            display: flex; align-items: center; gap: 10px;
+            border: 1px solid #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        .gift-card:hover { transform: translateY(-5px); border-color: var(--dorado); }
-        .gift-card img { height: 25px; margin-right: 15px; }
+        .gift-card img { height: 30px; width: auto; }
 
-        .pinterest-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 10px; }
+        input, select, textarea {
+            padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit;
+        }
+        .btn-enviar {
+            background: var(--dorado); color: white; border: none;
+            padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold;
+        }
 
-        /* --- 7. FORMULARIO RSVP --- */
-        .rsvp-card { background: white; padding: 40px 20px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        input, select, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; }
-        .btn-enviar { background: var(--dorado); color: white; border: none; padding: 15px; width: 100%; border-radius: 30px; cursor: pointer; font-size: 1rem; margin-top: 10px; }
-
-        @media (max-width: 600px) { h1 { font-size: 2.8rem; } section { padding: 60px 15px; } }
+        /* 7. Animaciones */
+        .reveal { opacity: 0; transition: opacity 1s ease-in-out; }
+        .reveal.active { opacity: 1; }
     </style>
 </head>
 <body>
@@ -136,12 +111,12 @@
         <div class="seal" onclick="abrirInvitacion()">
             <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#8b1e1e" /><text x="50" y="60" text-anchor="middle" fill="white" font-family="serif" font-size="22">C&V</text></svg>
         </div>
-        <p style="margin-top: 20px; letter-spacing: 2px;">TOCA PARA ABRIR</p>
+        <p style="margin-top: 20px; letter-spacing: 2px; font-size: 12px;">TOCA PARA ABRIR</p>
     </div>
 
     <section id="hero">
-        <h1 class="reveal">Cyn & Val</h1>
-        <p class="reveal" style="letter-spacing: 4px;">NOS CASAMOS EL 26.12.2026</p>
+        <h1 class="reveal" style="font-family: 'Cormorant Garamond', serif; font-size: 45px;">Cyn & Val</h1>
+        <p class="reveal" style="letter-spacing: 4px; font-size: 12px;">NOS CASAMOS EL 26.12.2026</p>
         
         <div class="timer-container reveal">
             <div class="timer-box"><span id="months">00</span>Meses</div>
@@ -152,171 +127,124 @@
     </section>
 
     <section id="galeria" class="reveal">
-        <h2>Nuestra Historia</h2>
+        <h2 style="font-family: 'Cormorant Garamond', serif;">Nuestra Historia</h2>
         <div class="swiper mySwiper">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <img src="/img/1.jpg" alt="1">
-                </div>
-                <div class="swiper-slide">
-                    <img src="/img/3.jpg" alt="3">
-                </div>
-                <div class="swiper-slide">
-                    <img src="/img/4.jpg" alt="4">
-                </div>
-                <div class="swiper-slide">
-                    <img src="/img/5.jpg" alt="5">
-                </div>
-                <div class="swiper-slide">
-                    <img src="/img/6.jpg" alt="6">
-                </div>
-                <div class="swiper-slide">
-                    <img src="/img/7.jpg" alt="7">
-                </div>
-                <div class="swiper-slide">
-                    <img src="/img/8.jpg" alt="8">
-                </div>
-                <div class="swiper-slide">
-                    <img src="/img/9.jpg" alt="9">
-                </div>
-                <div class="swiper-slide">
-                    <img src="/img/10.jpg" alt="10">
-                </div>
+                <div class="swiper-slide"><img src="img/1.jpg" alt="1"></div>
+                <div class="swiper-slide"><img src="img/3.jpg" alt="3"></div>
+                <div class="swiper-slide"><img src="img/4.jpg" alt="4"></div>
+                <div class="swiper-slide"><img src="img/5.jpg" alt="5"></div>
+                <div class="swiper-slide"><img src="img/10.jpg" alt="10"></div>
             </div>
         </div>
     </section>
+
     <section id="vestimenta" class="reveal">
-        <h2>Código de Vestimenta</h2>
-        <p>Inspiración para tu outfit (Formal / Cocktail)</p>
-        <div class="pinterest-wrapper">
+        <h2 style="font-family: 'Cormorant Garamond', serif;">Código de Vestimenta</h2>
+        <p style="font-size: 14px;">Inspiración para tu outfit (Formal / Cocktail)</p>
+        <div class="pinterest-wrapper" style="max-width: 320px; margin: 0 auto;">
             <a data-pin-do="embedBoard" data-pin-board-width="auto" data-pin-scale-height="400" data-pin-scale-width="80" href="https://mx.pinterest.com/edithpema/wedding-inspo-outfit"></a>
         </div>
     </section>
 
     <section id="ubicacion" class="reveal">
-        <h2>Ubicación</h2>
-        <p>Santuario del Sagrado Corazón, León, Gto.</p>
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3721.0543265780516!2d-101.681143!3d21.150242!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x842bbe074c6d371d%3A0x6b160b777a80b07e!2sSantuario%20del%20Sagrado%20Coraz%C3%B3n!5e0!3m2!1ses!2smx!4v1700000000000" width="100%" height="350" style="border:0; border-radius: 15px;" allowfullscreen="" loading="lazy"></iframe>
+        <h2 style="font-family: 'Cormorant Garamond', serif;">Ubicación</h2>
+        <p style="font-size: 14px; margin-bottom: 20px;">Santuario del Sagrado Corazón, León, Gto.</p>
+        <div style="max-width: 320px; margin: 0 auto;">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3721.43265749363!2d-101.6841!3d21.1234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjHCsDA3JzI0LjIiTiAxMDFwrDQxJzAyLjgiVw!5e0!3m2!1ses!2smx!4v1620000000000!5m2!1ses!2smx" width="100%" height="250" style="border:0; border-radius: 15px;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
     </section>
 
     <section id="mesa-regalos" class="reveal">
-        <h2>Mesa de Regalos</h2>
+        <h2 style="font-family: 'Cormorant Garamond', serif;">Mesa de Regalos</h2>
         <div class="gift-container">
             <a href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/51971551" target="_blank" class="gift-card">
-                <img src="https://www.tauro.mx/wp-content/uploads/2017/01/liverpool-logo.jpg"> Liverpool (ID: 51971551)
+                <img src="https://www.liverpool.com.mx/assets/images/logos/liverpool-logo.svg" alt="Liverpool"> Liverpool (ID: 51971551)
             </a>
-            <a href="https://www.amazon.com.mx/wedding/guest-view/18BMN2KGYZ47J" target="_blank" class="gift-card">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg"> Mesa Amazon
+            <a href="https://www.amazon.com.mx/wedding" target="_blank" class="gift-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon"> Mesa Amazon
             </a>
-            <div class="gift-card" style="cursor: pointer;" onclick="alert('CLABE: 0123 4567 8910 1112 \nBBVA \nA nombre de: Brian & Megan')">
-                <img src="https://cdn-icons-png.flaticon.com/512/2489/2489756.png"> Regalo en Efectivo
+            <div class="gift-card" style="cursor: pointer;" onclick="alert('CLABE: 0123 4567 8910 1112 \nBBVA \nA nombre de: Cyn & Val')">
+                <img src="https://cdn-icons-png.flaticon.com/512/2489/2489756.png" alt="Efectivo"> Regalo en Efectivo
             </div>
         </div>
     </section>
 
     <section id="rsvp" class="reveal">
-        <div class="rsvp-card">
-            <h2>Confirmar Asistencia</h2>
-            <form id="rsvpForm">
-                <input type="text" id="nombre" placeholder="Nombre completo" required>
-                <select id="asistencia">
-                    <option value="Si">¡Sí, ahí estaré!</option>
-                    <option value="No">No podré ir</option>
-                </select>
-                <textarea id="mensaje" placeholder="Alergias o mensaje para los novios"></textarea>
-                <button type="submit" class="btn-enviar" id="btnEnviar">Confirmar Asistencia</button>
-            </form>
-            <p id="success-msg" style="display:none; color: green; margin-top:20px;">¡Gracias! Tu respuesta ha sido registrada.</p>
-        </div>
+        <h2 style="font-family: 'Cormorant Garamond', serif;">Confirmar Asistencia</h2>
+        <form id="rsvpForm">
+            <input type="text" id="nombre" name="nombre" placeholder="Nombre completo" required>
+            <select id="asistencia" name="asistencia">
+                <option value="Si">¡Sí, ahí estaré!</option>
+                <option value="No">No podré ir</option>
+            </select>
+            <textarea id="mensaje" name="mensaje" placeholder="Alergias o mensaje para los novios"></textarea>
+            <button type="submit" class="btn-enviar" id="btnEnviar">Confirmar Asistencia</button>
+        </form>
+        <p id="success-msg" style="display:none; color: #b8926a; margin-top:20px;">¡Gracias! Tu respuesta ha sido registrada.</p>
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        // 1. Abrir Invitación
         function abrirInvitacion() {
             document.getElementById('envelope-overlay').style.transform = "translateY(-100%)";
-            setTimeout(reveal, 500); // Dispara las animaciones iniciales
+            setTimeout(reveal, 500);
         }
-    
-        // 2. Menú Hamburguesa
+
         function toggleMenu() {
             document.getElementById('nav').classList.toggle('active');
         }
-    
-        // 3. Galería Interactiva (Swiper) - OPTIMIZADA
+
         const swiper = new Swiper(".mySwiper", {
-                effect: "cards",
-                grabCursor: true,
-                nested: true,
-                /* Evita que Swiper intente adivinar el movimiento y bloquee el scroll */
-                touchStartPreventDefault: false,
-                touchMoveStopPropagation: false,
-                iOSEdgeSwipeThreshold: 20
-            });
-    
-        // 4. Contador (Meses, Días, Horas, Minutos)
+            effect: "cards",
+            grabCursor: true,
+            touchStartPreventDefault: false,
+            nested: true
+        });
+
         const targetDate = new Date("December 26, 2026 12:00:00").getTime();
         setInterval(() => {
             const now = new Date().getTime();
             const diff = targetDate - now;
             if (diff <= 0) return;
-    
+
             const msPorMinuto = 1000 * 60;
             const msPorHora = msPorMinuto * 60;
             const msPorDia = msPorHora * 24;
             const msPorMes = msPorDia * 30.44; 
-    
-            const meses = Math.floor(diff / msPorMes);
-            const dias = Math.floor((diff % msPorMes) / msPorDia);
-            const horas = Math.floor((diff % msPorDia) / msPorHora);
-            const minutos = Math.floor((diff % msPorHora) / msPorMinuto);
-    
-            if(document.getElementById('months')) document.getElementById('months').innerText = meses;
-            if(document.getElementById('days')) document.getElementById('days').innerText = dias;
-            if(document.getElementById('hours')) document.getElementById('hours').innerText = horas;
-            if(document.getElementById('minutes')) document.getElementById('minutes').innerText = minutos;
+
+            document.getElementById('months').innerText = Math.floor(diff / msPorMes);
+            document.getElementById('days').innerText = Math.floor((diff % msPorMes) / msPorDia);
+            document.getElementById('hours').innerText = Math.floor((diff % msPorDia) / msPorHora);
+            document.getElementById('minutes').innerText = Math.floor((diff % msPorHora) / msPorMinuto);
         }, 1000);
-    
-        // 5. Confirmación Google Sheets (RSVP)
+
         const scriptURL = 'https://script.google.com/macros/s/AKfycbzHZcpa5n1BsYfTxwb1bFEaGplSf-5NsqHawoOiCMrlQ9Id7z9r-arZUN246YVz0qrm6w/exec';
         const form = document.getElementById('rsvpForm');
-        if(form) {
-            form.addEventListener('submit', e => {
-                e.preventDefault();
-                const btn = document.getElementById('btnEnviar');
-                btn.innerText = "Registrando...";
-                fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-                    .then(response => {
-                        document.getElementById('success-msg').style.display = 'block';
-                        form.reset();
-                        btn.innerText = "Confirmar Asistencia";
-                    })
-                    .catch(error => console.error('Error!', error.message));
-            });
-        }
-    
-     // 6. Scroll Reveal - Versión única y fluida
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const btn = document.getElementById('btnEnviar');
+            btn.innerText = "Registrando...";
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => {
+                    document.getElementById('success-msg').style.display = 'block';
+                    form.reset();
+                    btn.innerText = "Confirmar Asistencia";
+                })
+                .catch(error => console.error('Error!', error.message));
+        });
+
         function reveal() {
             const reveals = document.querySelectorAll(".reveal");
-            const windowHeight = window.innerHeight;
-            
             reveals.forEach(el => {
-                const elementTop = el.getBoundingClientRect().top;
-                if (elementTop < windowHeight - 50) {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 50) {
                     el.classList.add("active");
                 }
             });
         }
-        // Solo un listener para todo el scroll
-        window.addEventListener("scroll", () => {
-            window.requestAnimationFrame(reveal);
-        }, { passive: true });
-    
+        window.addEventListener("scroll", reveal, { passive: true });
         window.onload = reveal;
-    
-        window.addEventListener("scroll", () => {
-            window.requestAnimationFrame(reveal);
-        }, { passive: true });
     </script>
 </body>
 </html>
