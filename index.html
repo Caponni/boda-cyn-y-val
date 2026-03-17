@@ -220,95 +220,80 @@
     <script>
         // 1. Abrir Invitación
         function abrirInvitacion() {
-            document.getElementById('envelope-overlay').style.transform = 'translateY(-100%)';
-            reveal(); // Disparar animaciones iniciales
+            document.getElementById('envelope-overlay').style.transform = "translateY(-100%)";
+            setTimeout(reveal, 500); // Dispara las animaciones iniciales
         }
-
+    
         // 2. Menú Hamburguesa
         function toggleMenu() {
             document.getElementById('nav').classList.toggle('active');
         }
-
-        // 3. Galería Interactiva (Swiper)
+    
+        // 3. Galería Interactiva (Swiper) - OPTIMIZADA
         const swiper = new Swiper(".mySwiper", {
             effect: "cards",
             grabCursor: true,
-            nested: true,            // Ayuda si hay elementos uno dentro de otro
-            touchReleaseOnEdges: true // Permite seguir haciendo scroll al llegar al borde de las fotos
+            nested: true,
+            touchReleaseOnEdges: true
         });
-        // 4. Contador
-        const targetDate = new Date("December 26, 2026 16:00:00").getTime();
+    
+        // 4. Contador (Meses, Días, Horas, Minutos)
+        const targetDate = new Date("March 29, 2026 16:00:00").getTime();
         setInterval(() => {
             const now = new Date().getTime();
             const diff = targetDate - now;
-
-            if (diff <= 0) {
-                document.getElementById('cuenta-regresiva').innerHTML = "<h2>¡Llegó el gran día!</h2>";
-                return;
-            }
-
+            if (diff <= 0) return;
+    
             const msPorMinuto = 1000 * 60;
             const msPorHora = msPorMinuto * 60;
             const msPorDia = msPorHora * 24;
             const msPorMes = msPorDia * 30.44; 
-
+    
             const meses = Math.floor(diff / msPorMes);
             const dias = Math.floor((diff % msPorMes) / msPorDia);
             const horas = Math.floor((diff % msPorDia) / msPorHora);
             const minutos = Math.floor((diff % msPorHora) / msPorMinuto);
-
-            // Inyectar solo lo necesario
+    
             if(document.getElementById('months')) document.getElementById('months').innerText = meses;
             if(document.getElementById('days')) document.getElementById('days').innerText = dias;
             if(document.getElementById('hours')) document.getElementById('hours').innerText = horas;
             if(document.getElementById('minutes')) document.getElementById('minutes').innerText = minutos;
-
         }, 1000);
-
-        // 6. Enviar a Google Sheets
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzHZcpa5n1BsYfTxwb1bFEaGplSf-5NsqHawoOiCMrlQ9Id7z9r-arZUN246YVz0qrm6w/exec'; // <--- Pon tu URL aquí
+    
+        // 5. Confirmación Google Sheets (RSVP)
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzHZcpa5n1BsYfTxwb1bFEaGplSf-5NsqHawoOiCMrlQ9Id7z9r-arZUN246YVz0qrm6w/exec';
         const form = document.getElementById('rsvpForm');
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            const btn = document.getElementById('btnEnviar');
-            btn.innerText = "Registrando...";
-            fetch(scriptURL, { 
-                method: 'POST', 
-                mode: 'no-cors', 
-                body: JSON.stringify({
-                    nombre: document.getElementById('nombre').value,
-                    asistencia: document.getElementById('asistencia').value,
-                    mensaje: document.getElementById('mensaje').value
-                })
-            })
-            .then(() => {
-                document.getElementById('success-msg').style.display = 'block';
-                form.reset();
-                btn.innerText = "Confirmar Asistencia";
+        if(form) {
+            form.addEventListener('submit', e => {
+                e.preventDefault();
+                const btn = document.getElementById('btnEnviar');
+                btn.innerText = "Registrando...";
+                fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                    .then(response => {
+                        document.getElementById('success-msg').style.display = 'block';
+                        form.reset();
+                        btn.innerText = "Confirmar Asistencia";
+                    })
+                    .catch(error => console.error('Error!', error.message));
             });
-        });
-        // 7. Lógica de Scroll Reveal (Esto es lo que falta para que aparezca el contenido)function reveal() {
-        const reveals = document.querySelectorAll(".reveal");
-        const triggerBottom = window.innerHeight * 0.9; // Se activa cuando la sección está casi en pantalla
+        }
     
-        reveals.forEach(box => {
-            const boxTop = box.getBoundingClientRect().top;
-            if (boxTop < triggerBottom) {
-                box.classList.add("active");
-            }
-        });
-    }
+        // 6. Scroll Reveal - SUAVE Y SIN TRABAS
+        function reveal() {
+            const reveals = document.querySelectorAll(".reveal");
+            const triggerBottom = window.innerHeight * 0.85;
     
-    // Usamos un optimizador para que el scroll no se sienta pesado
-    let isScrolling;
-    window.addEventListener("scroll", () => {
-        window.requestAnimationFrame(reveal);
-    }, { passive: true });
-
-// CAMBIO 2: Agregamos { passive: true } para que el celular no se "trabé"
-window.addEventListener("scroll", reveal, { passive: true });
-        // Activa la escucha del scroll
-        window.addEventListener("scroll", reveal);
+            reveals.forEach(box => {
+                const boxTop = box.getBoundingClientRect().top;
+                if (boxTop < triggerBottom) {
+                    box.classList.add("active");
+                }
+            });
+        }
+    
+        window.addEventListener("scroll", () => {
+            window.requestAnimationFrame(reveal);
+        }, { passive: true });
     </script>
 </body>
 </html>
