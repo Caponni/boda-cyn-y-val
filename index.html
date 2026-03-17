@@ -22,6 +22,9 @@
             margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; 
             background-color: var(--crema); color: var(--oscuro); 
             scroll-behavior: smooth; overflow-x: hidden;
+            overflow-x: hidden;
+            overflow-y: auto !important;
+            touch-action: manipulation; /* Optimiza el toque para scroll */
         }
 
         /* --- 1. MENÚ HAMBURGUESA --- */
@@ -63,9 +66,14 @@
                 transition: all 0.8s ease-out; /* Más rápido y suave */
                 will-change: transform, opacity; /* Ayuda al cel a procesar mejor */
         }
+        .reveal {
+            opacity: 0;
+            transition: opacity 1.2s ease; /* Solo opacidad, sin movimiento */
+            will-change: opacity;
+        }
+        
         .reveal.active {
             opacity: 1;
-            transform: translateY(0);
         }
 
         h1, h2 { font-family: 'Cormorant Garamond', serif; color: var(--dorado); }
@@ -230,11 +238,11 @@
         }
     
         // 3. Galería Interactiva (Swiper) - OPTIMIZADA
-        const swiper = new Swiper(".mySwiper", {
+      const swiper = new Swiper(".mySwiper", {
             effect: "cards",
             grabCursor: true,
-            nested: true,
-            touchReleaseOnEdges: true
+            // Esto permite que si deslizas hacia arriba/abajo sobre las fotos, el sitio haga scroll
+            touchStartPreventDefault: false 
         });
     
         // 4. Contador (Meses, Días, Horas, Minutos)
@@ -278,18 +286,25 @@
             });
         }
     
-        // 6. Scroll Reveal - SUAVE Y SIN TRABAS
-        function reveal() {
-            const reveals = document.querySelectorAll(".reveal");
-            const triggerBottom = window.innerHeight * 0.85;
-    
-            reveals.forEach(box => {
-                const boxTop = box.getBoundingClientRect().top;
-                if (boxTop < triggerBottom) {
-                    box.classList.add("active");
-                }
-            });
+        // 6. Scroll Reveal
+    function reveal() {
+        const reveals = document.querySelectorAll(".reveal");
+        for (let i = 0; i < reveals.length; i++) {
+            let windowHeight = window.innerHeight;
+            let elementTop = reveals[i].getBoundingClientRect().top;
+            
+            // Si la parte superior del elemento entra un poco en pantalla, se muestra
+            if (elementTop < windowHeight - 50) {
+                reveals[i].classList.add("active");
+            }
         }
+    }
+
+    // Escucha el scroll de forma natural
+    window.addEventListener("scroll", reveal);
+    
+    // Ejecutar una vez al cargar por si hay algo ya visible
+    window.onload = reveal;
     
         window.addEventListener("scroll", () => {
             window.requestAnimationFrame(reveal);
