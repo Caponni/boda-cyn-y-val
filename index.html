@@ -183,19 +183,34 @@
         </div>
     </section>
 
-    <section id="mesa-regalos" class="reveal">
-        <h2 style="font-family: 'Cormorant Garamond', serif;">Mesa de Regalos</h2>
-        <div class="gift-container">
-            <a href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/51971551" target="_blank" class="gift-card">
-                <img src="https://www.comacc.mx/LOGOS%20RED%20MAS/SERVICIOS%20DIGITALES/LIVERPOOL.png" alt="Liverpool"> Liverpool (ID: 51971551)
+    <section id="mesa-regalos" class="container reveal">
+        <h2 class="cormorant" style="font-size: 36px;">Mesa de Regalos</h2>
+        <p style="margin-bottom: 30px;">Tu presencia es nuestro mejor regalo, pero si deseas tener un detalle:</p>
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; align-items: center;">
+            <a href="https://www.amazon.com.mx/wedding" target="_blank" class="btn-gold" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                <i class="fab fa-amazon"></i> AMAZON
             </a>
-            <a href="https://www.amazon.com.mx/wedding" target="_blank" class="gift-card">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon"> Mesa Amazon
+            <a href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/51971551" target="_blank" class="btn-gold" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                <i class="fas fa-shopping-bag"></i> LIVERPOOL
             </a>
-            <div class="gift-card" style="cursor: pointer;" onclick="alert('CLABE: 0123 4567 8910 1112 \nBBVA \nA nombre de: Cyn & Val')">
-                <img src="https://cdn-icons-png.flaticon.com/512/2489/2489756.png" alt="Efectivo"> Regalo en Efectivo
-            </div>
+        <button onclick="openModal()" class="btn-gold" style="cursor: pointer; display: inline-flex; align-items: center; gap: 8px; border: none; font-family: inherit;">
+            <i class="fas fa-money-bill-wave"></i> REGALO EN EFECTIVO
+        </button>
+    </div>
+    <div id="bankModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h3 class="cormorant" style="font-size: 28px; color: #b8926a; margin-top: 15px;">Datos Bancarios</h3>
+         <div class="bank-details montserrat" style="font-size: 14px; text-align: left; margin-top: 20px;">
+             <p style="margin: 5px 0;"><strong>Banco:</strong> BBVA</p>
+             <p style="margin: 5px 0;"><strong>Titular:</strong> Renato o Julieta</p>
+             <p style="margin: 5px 0;"><strong>CLABE:</strong> <span id="clabe-number">012345678901234567</span></p>
+             <button class="btn-copy" onclick="copyClabe()" style="margin-top: 15px; width: 100%; padding: 10px; background: #b8926a; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                 <i class="far fa-copy"></i> Copiar CLABE
+             </button>
+         </div>
         </div>
+    </div>
     </section>
 
     <section id="rsvp" class="reveal">
