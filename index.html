@@ -3,141 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuestra Boda - Cyn & Val</title>
+    <title>Nuestra Boda - Cynthia & Valeria</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;600&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script async defer src="//assets.pinterest.com/js/pinit.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <style>
         :root {
+            --verde: #5a6535;
+            --verde-oscuro: #404a1e;
             --dorado: #b8926a;
-            --crema: #fdfaf6;
+            --crema: #f9f4ea;
             --oscuro: #2c2c2c;
             --vino: #8b1e1e;
             --blanco: #ffffff;
         }
 
-        /* Estructura Base */
         body, html { margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; background-color: var(--crema); color: var(--oscuro); scroll-behavior: smooth; overflow-x: hidden; }
         .cormorant { font-family: 'Cormorant Garamond', serif; }
         .container { padding: 80px 20px; text-align: center; max-width: 1000px; margin: 0 auto; }
-        
-        /* Animación de aparición */
         .reveal { opacity: 0; transform: translateY(30px); transition: all 1s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
-
-        /* 1. EL SOBRE (Solo al inicio) */
-        #envelope-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #f4f1ea; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; z-index: 4000;
-            transition: transform 1.2s cubic-bezier(0.8, 0, 0.2, 1);
+        #envelope-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #efebe1; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 4000; transition: transform 1.2s cubic-bezier(0.8, 0, 0.2, 1); }
+        .cover-img { width: 100%; height: 100vh; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1;}
+        .cover-timer-overlay { position: absolute; bottom: 40px; width: 100%; z-index: 3; }
+        .container { width: 100%; max-width: 1000px; padding: 80px 20px; margin: 0 auto; box-sizing: border-box; text-align: center; }
+        .cover-text-top { position: absolute; top: 5%; width: 100%; text-align: center; color: white; z-index: 3; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+        .cover-text-top img { max-width: 100px !important; margin-top: 0px; height: auto; }
+        .cover-text-top h1 { font-size: 35px; margin: 0; font-weight: 300; }
+        .cover-text-top p { font-size: 12px; letter-spacing: 6px; margin-top: 5px; }
+        .timer-container { display: grid; grid-template-columns: repeat(4, 1fr); width: 90%; margin: 0 auto; gap: 10px; }
+        .timer-box-simple { text-align: center; }
+        .timer-box-simple span { display: block; font-size: 40px; font-weight: bold; color: white; }
+        .timer-box-simple label { font-size: 12px; text-transform: uppercase; color: white; letter-spacing: 1px;}
+        .cover-overlay-radial { position: absolute; top: 0; left: 0; width: 100%; height: 100vh;
+            background: radial-gradient(
+                ellipse at center,  
+                rgba(0,0,0,0) 0%,   
+                rgba(0,0,0,0.2) 50%, 
+                rgba(0,0,0,0.8) 90%,  
+                rgba(0,0,0,0.9) 100% 
+            );
+            pointer-events: none; 
+        }
+        
+        .map-card-single { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .map-card-single h3 { color: var(--verde); font-size: 20px; text-transform: uppercase; margin-bottom: 10px; }
+        iframe { width: 100%; height: 250px; border: 0; border-radius: 10px; margin: 15px 0; }
+        .gift-buttons-container { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; align-items: center; max-width: 900px; margin: 0 auto; }
+        .btn-copy { background-color: var(--verde); color: white; border: none; padding: 10px; border-radius: 5px; margin-top: 15px; cursor: pointer; width: 100%; }
+        .modal { 
+            display: none; 
+            position: fixed; 
+            z-index: 10000 !important;
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0,0,0,0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .modal-content { 
+            background-color: #fdfaf6; 
+            margin: auto; /* Elimina el margen fijo superior */
+            padding: 40px 20px; 
+            border-radius: 20px; 
+            width: 100%; 
+            max-width: 450px; 
+            text-align: center; 
+            position: relative; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            /* Asegura que no sea más alto que la pantalla */
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
-        /* 2. PORTADA (Lo primero tras abrir) */
-        #portable-cover { width: 100%; height: 100vh; position: relative; overflow: hidden; }
-        .cover-img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.7); }
-        .cover-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: white; width: 90%; }
-        .cover-text h1 { font-size: clamp(40px, 8vw, 65px); margin: 0; font-weight: 300; letter-spacing: 5px; }
+        .close-modal { 
+            position: absolute; 
+            top: 10px; 
+            right: 15px; 
+            font-size: 45px; /* Botón más grande */
+            font-weight: bold; 
+            cursor: pointer; 
+            color: var(--verde); 
+            line-height: 1;
+            padding: 10px; /* Área de toque más grande */
+        }
 
-        /* 3. TIMER */
-        .timer-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; max-width: 500px; margin: 40px auto; }
-        .timer-box { background: white; padding: 20px 10px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .timer-box span { display: block; font-size: 28px; font-weight: bold; color: var(--dorado); }
-        .timer-box label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* 4. GALERÍA POLAROID */
+        .bank-details { 
+            text-align: center; /* Centrado el texto */
+            margin-top: 20px; 
+            background: #fff; 
+            padding: 20px; 
+            border-radius: 12px; 
+            border: 1px dashed var(--verde); 
+        }
+        .close-modal:hover { color: var(--vino); }
+        #rsvpForm textarea { height: 100px; resize: none; }
+        #rsvpForm { max-width: 450px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        #rsvpForm input, 
+        #rsvpForm select, 
+        #rsvpForm textarea {width: 100%; box-sizing: border-box; padding: 15px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Montserrat'; font-size: 14px; }
+        .btn-gold { background: var(--verde); color: white; padding: 20px 40px; border: none; border-radius: 8px; cursor: pointer;text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; display: inline-flex; align-items: center; justify-content: center; gap: 12px; font-size: 16px; text-decoration: none; width: 100%; max-width: 300px; margin: 10px 0;}
+        .btn-gold-custom { background: var(--verde); color: white; padding: 20px 40px; border: none; border-radius: 8px; cursor: pointer; text-transform: uppercase; font-weight: normal; letter-spacing: 2px; transition: 0.3s; display: inline-flex; align-items: center; justify-content: center; gap: 12px; font-size: 16px; text-decoration: none; width: 100%; max-width: 300px; margin: 10px 0; }
+        .polaroid-frame:hover { transform: rotate(0deg) scale(1.05); }
+        .polaroid-frame img { width: 100%; display: block; }
+        .polaroid-section { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 50px; padding: 60px 20px; max-width: 1000px; margin: 40px auto; }
+        .polaroid-frame { background: white; padding: 15px 15px 40px 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); transform: rotate(-5deg); flex: 1; max-width: 350px; }
+        .polaroid-text { flex: 1; font-style: italic;  max-width: 400px; text-align: left; color: var(--dorado); font-size: 1.4rem; line-height: 1.2; font-family: 'cormorant'; text-align: center; letter-spacing: 3px; }
+        #audio-container { position: fixed; top: 20px; right: 20px; z-index: 5000; }
+        #btn-musica { background: var(--verde); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; transition: transform 0.3s; }
+        #btn-musica:hover { transform: scale(1.1); }
+        .card-estilo-comun { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); max-width: 800px; margin: 0 auto; }
         .mySwiper { width: 300px; height: 420px; margin: 20px auto; overflow: visible !important; }
         .swiper-slide { background: white; padding: 10px 10px 45px 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-radius: 2px; }
         .swiper-slide img { width: 100%; height: 100%; object-fit: cover; border: 1px solid #eee; }
-        .swiper-button-next, .swiper-button-prev { color: var(--dorado); display: none; }
-        @media (min-width: 1024px) {
-            .swiper-button-next, .swiper-button-prev { display: flex; }
-            .mySwiper { width: 400px; height: 520px; }
-        }
-
+        .swiper-button-next, .swiper-button-prev { color: var(--verde); display: none; }
         #programa { position: relative; }
         .timeline-container { position: relative; max-width: 800px; margin: 0 auto; padding: 40px 0; }
         .timeline-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: #e0e0e0; transform: translateX(-50%); z-index: 1; }
         .timeline-item { width: 50%; margin-bottom: 40px; position: relative; z-index: 2;   }
         .timeline-item.left { left: 0; text-align: right; padding-right: 45px; box-sizing: border-box; }
         .timeline-item.right { left: 50%; text-align: left; padding-left: 45px; box-sizing: border-box; }
-        .timeline-icon { position: absolute; top: 0; width: 40px; height: 40px; background: #b8926a;  color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; }
-        .left .timeline-icon { right: -20px; }        
-        .right .timeline-icon { left: -20px; }
-
-        /* 6. UBICACIÓN MAPAS */
-        .map-container-single {
-            width: 100%; margin: 40px auto 0 auto; }
-        /* Ajuste para que en navegador ocupe 3/4 partes y esté centrado */
+        .timeline-icon { position: absolute; top: 0; width: 50px; height: 50px; background: var(--verde); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; font-size: 20px; }
+        .left .timeline-icon { right: -25px; }        
+        .right .timeline-icon { left: -25px; }
+        #portable-cover { width: 100%; min-height: 100vh; position: relative; }
+        .map-container-single { width: 100%; margin: 40px auto 0 auto; }
         @media (min-width: 1024px) {
-            .map-container-single { width: 75%; /* Las 3/4 partes de la pantalla */ }
-            .map-container-single iframe {
-                height: 500px; /* Más alto para que luzca en pantallas grandes */ }
+            .map-container-single { width: 75%; }
+            .map-container-single iframe { height: 500px; }
+            .gift-buttons-container .btn-gold { flex: 1; max-width: 250px; padding: 15px 10px; justify-content: center; }
+            .swiper-button-next, .swiper-button-prev { display: flex; }
+            .mySwiper { width: 400px; height: 520px; }
         }
-        .map-card-single { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .map-card-single h3 { color: var(--dorado); font-size: 14px; text-transform: uppercase; margin-bottom: 10px; }
-        /* 1. Estilos del Contenedor de Botones */
-        .gift-buttons-container { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; align-items: center; max-width: 900px; margin: 0 auto; }
-        /* Fuerza el mismo tamaño solo en Computadora */
-        @media (min-width: 1024px) {
-            .gift-buttons-container .btn-gold { flex: 1; max-width: 250px; padding: 15px 10px; justify-content: center; }   }
-        /* 2. Estilos del Modal (Corregido para estar por encima de todo) */
-        .modal { display: none; position: fixed; z-index: 9999 !important; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); }
-        .modal-content { background-color: #fdfaf6; margin: 10% auto; padding: 30px; border-radius: 15px; width: 85%; max-width: 400px; text-align: center; position: relative; box-shadow: 0 5px 25px rgba(0,0,0,0.5); }
-        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 35px; font-weight: bold; cursor: pointer; color: #b8926a; line-height: 1; }
-        .btn-copy { background-color: #b8926a; color: white; border: none; padding: 10px; border-radius: 5px; margin-top: 15px; cursor: pointer; width: 100%; }
-        .close-modal:hover { color: var(--vino); }
-        .bank-details { text-align: left; margin-top: 20px; background: #fff; padding: 15px; border-radius: 8px; border: 1px dashed #b8926a; }
-        /* 7. FORMULARIO RSVP */
-        #rsvpForm { max-width: 450px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px; }
-        #rsvpForm input, #rsvpForm select, #rsvpForm textarea {
-            width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 8px;
-            font-family: 'Montserrat'; font-size: 14px; box-sizing: border-box; }
-        #rsvpForm textarea { height: 100px; resize: none; }
-        .btn-gold { background: var(--dorado); color: white; padding: 18px; border: none; border-radius: 8px; cursor: pointer; text-transform: uppercase; font-weight: bold; letter-spacing: 2px; transition: 0.3s; width: 100%; }
-        footer { background: #1a1a1a; color: rgba(255,255,255,0.5); padding: 40px 20px; text-align: center; }
-        footer p { font-size: 10px; letter-spacing: 2px; margin: 0; text-transform: uppercase; }
+        @media (max-width: 768px) {
+            .polaroid-section { flex-direction: column; text-align: center; gap: 0px; padding: 0px; margin: 0; }
+            .polaroid-text { text-align: center; font-size: 1.3rem; }
+            .polaroid-frame { transform: rotate(-2deg); margin-bottom: 20px; }
+            .btn-gold-custom { width: 380px; max-width: 450px; }
+            .gift-buttons-container { justify-content: center; }
+            .timer-box-simple span { font-size: 35px; }
+            .timer-box-simple label { font-size: 15px; }
+            .cover-text-top { top: 3%; }
+            .timer-container { gap: 15px; }
+        }
+
     </style>
 </head>
 <body>
-
+    <div id="audio-container">
+        <audio id="musica" loop>
+            <source src="musica.mp3" type="audio/mpeg">
+        </audio>
+        <button id="btn-musica" onclick="toggleMusica()">
+            <i id="icono-musica" class="fas fa-music"></i>
+        </button>
+    </div>
     <div id="envelope-overlay">
-        <h2 class="cormorant">¡Bienvenidos!</h2>
-        <div onclick="abrirSobre()" style="cursor:pointer; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-            <svg width="100" height="100" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="45" fill="#8b1e1e" />
-                <text x="50" y="62" text-anchor="middle" fill="white" font-family="serif" font-size="22">C&V</text>
-            </svg>
+        <h2 class="cormorant" style="font-size: 38px;">¡Bienvenidxs!</h2>
+        <div onclick="abrirSobre()" style="cursor:pointer; transition: transform 0.3s; width: 100px; height: 100px; display: flex; justify-content: center; align-items: center;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+            <img src="img/sello.png" alt="Sello C&V" style="max-width: 150%; max-height: 150%; object-fit: contain;">
         </div>
-        <p class="montserrat" style="font-size: 10px; margin-top: 20px; letter-spacing: 3px;">TOCA EL SELLO</p>
+        <p class="montserrat" style="font-size: 26px; margin-top: 20px; letter-spacing: 3px; color:var(--verde);">TOCA EL SELLO</p>
     </div>
 
-    <div id="main-wrapper">
-        <section id="portable-cover">
-            <img src="img/main.jpg" class="cover-img">
-            <div class="cover-text">
-                <h1 class="cormorant">Cyn & Val</h1>
-                <p class="montserrat" style="letter-spacing: 5px; font-size: 12px; margin-top: 15px;">26 DE DICIEMBRE DE 2026</p>
+    <section id="portable-cover">
+        <img src="img/main.png" class="cover-img">
+        <div class="cover-overlay-radial" style="z-index: 2;"></div>
+            <div class="cover-text-top">
+                <h1 class="cormorant">Nos casamos</h1>
+                <p class="montserrat">26 DICIEMBRE DEL 2026</p>
+                <img src="img/logo2.png" alt="Logo" style="max-width: 200px; margin-top: 20px;">
             </div>
-        </section>
-
-        <section id="hero" class="container reveal">
-            <h2 class="cormorant" style="font-size: 32px;">¡Faltan solo!</h2>
-            <div class="timer-container">
-                <div class="timer-box"><span id="months">0</span><label>Meses</label></div>
-                <div class="timer-box"><span id="days">0</span><label>Días</label></div>
-                <div class="timer-box"><span id="hours">0</span><label>Horas</label></div>
-                <div class="timer-box"><span id="minutes">0</span><label>Min</label></div>
+            <div class="cover-timer-overlay">
+                <div class="timer-container">
+                    <div class="timer-box-simple"><span id="months">0</span><label>Meses</label></div>
+                    <div class="timer-box-simple"><span id="days">0</span><label>Días</label></div>
+                    <div class="timer-box-simple"><span id="hours">0</span><label>Horas</label></div>
+                    <div class="timer-box-simple"><span id="minutes">0</span><label>Min</label></div>
+                </div>
             </div>
         </section>
 
         <section id="galeria" class="container reveal">
-            <h2 class="cormorant" style="font-size: 36px;">Nuestra Historia</h2>
+            <h2 class="cormorant" style="font-size: 36px;">Celebra con nosotras</h2>
             <div class="swiper mySwiper">
                 <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="img/1.jpg"></div>
+                    <div class="swiper-slide"><img src="img/2.jpg"></div>
+                    <div class="swiper-slide"><img src="img/3.jpg"></div>
+                    <div class="swiper-slide"><img src="img/4.jpg"></div>
+                    <div class="swiper-slide"><img src="img/5.jpg"></div>
+                    <div class="swiper-slide"><img src="img/6.jpg"></div>
+                    <div class="swiper-slide"><img src="img/7.jpg"></div>
+                    <div class="swiper-slide"><img src="img/8.jpg"></div>
+                    <div class="swiper-slide"><img src="img/1.jpg"></div>
+                    <div class="swiper-slide"><img src="img/2.jpg"></div>
+                    <div class="swiper-slide"><img src="img/3.jpg"></div>
+                    <div class="swiper-slide"><img src="img/4.jpg"></div>
+                    <div class="swiper-slide"><img src="img/5.jpg"></div>
+                    <div class="swiper-slide"><img src="img/6.jpg"></div>
+                    <div class="swiper-slide"><img src="img/7.jpg"></div>
+                    <div class="swiper-slide"><img src="img/8.jpg"></div>
+                    <div class="swiper-slide"><img src="img/1.jpg"></div>
+                    <div class="swiper-slide"><img src="img/2.jpg"></div>
+                    <div class="swiper-slide"><img src="img/3.jpg"></div>
+                    <div class="swiper-slide"><img src="img/4.jpg"></div>
+                    <div class="swiper-slide"><img src="img/5.jpg"></div>
+                    <div class="swiper-slide"><img src="img/6.jpg"></div>
+                    <div class="swiper-slide"><img src="img/7.jpg"></div>
+                    <div class="swiper-slide"><img src="img/8.jpg"></div>
                     <div class="swiper-slide"><img src="img/1.jpg"></div>
                     <div class="swiper-slide"><img src="img/2.jpg"></div>
                     <div class="swiper-slide"><img src="img/3.jpg"></div>
@@ -158,44 +241,42 @@
                 <div class="timeline-line"></div>
                 
                 <div class="timeline-item left reveal">
-                    <div class="timeline-icon"><i class="fas fa-church"></i></div>
-                    <h3 class="cormorant">Ceremonia</h3>
-                    <p class="montserrat" style="font-size: 13px; color: var(--dorado);">1:00 PM</p>
+                    <div class="timeline-icon"><i class="fas fa-champagne-glasses"></i></div>
+                    <p class="cormorant" style="font-size: 25px;">Recepción</p>
+                    <p class="montserrat" style="font-size: 18px; color: var(--verde);">6:00 PM</p>
                 </div>
                 <div class="timeline-item right reveal">
-                    <div class="timeline-icon"><i class="fas fa-cocktail"></i></div>
-                    <h3 class="cormorant">Recepción</h3>
-                    <p class="montserrat" style="font-size: 13px; color: var(--dorado);">2:00 PM</p>
+                    <div class="timeline-icon"><i class="fas fa-church"></i></div>
+                   <p class="cormorant" style="font-size: 25px;">Ceremonia</p>
+                    <p class="montserrat" style="font-size: 18px; color: var(--verde);">6:30 PM</p>
                 </div>
                 <div class="timeline-item left reveal">
                     <div class="timeline-icon"><i class="fas fa-utensils"></i></div>
-                    <h3 class="cormorant">Comida</h3>
-                    <p class="montserrat" style="font-size: 13px; color: var(--dorado);">3:00 PM</p>
+                    <p class="cormorant" style="font-size: 25px;">Cena</p>
+                    <p class="montserrat" style="font-size: 18px; color: var(--verde);">8:00 PM</p>
                 </div>
                 <div class="timeline-item right reveal">
                     <div class="timeline-icon"><i class="fas fa-compact-disc"></i></div>
-                    <h3 class="cormorant">Fiesta</h3>
-                    <p class="montserrat" style="font-size: 13px; color: var(--dorado);">3:30 PM</p>
+                    <p class="cormorant" style="font-size: 25px;">Se abre la pista</p>
+                    <p class="montserrat" style="font-size: 18px; color: var(--verde);">9:00 PM</p>
                 </div>
             </div>
         </section>
 
-        <section id="ubicacion" class="container reveal">
-            <h2 class="cormorant" style="font-size: 36px;">Ubicación</h2>
-            
+        <section id="ubicacion" class="container reveal">            
             <div class="map-container-single">
                 <div class="map-card-single">
-                    <h3 class="montserrat">La Celebración</h3>
-                    <p class="cormorant" style="font-size: 26px; margin-bottom: 20px;">Santuario del Sagrado Corazón</p>
+                    <h2 class="cormorant" style="font-size: 36px;">Ubicación</h2>
+                    <p class="cormorant" style="font-size: 26px; margin-bottom: 20px;">Terraza Las Monarcas</p>
                     
                     <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3721.050684841964!2d-101.68112342416962!3d21.1503673836021!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x842bc026f7a73199%3A0x67396a40a23364f9!2sSantuario%20del%20Sagrado%20Corazón%20de%20Jesús!5e0!3m2!1ses-419!2smx!4v1710793000000!5m2!1ses-419!2smx" 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1904902.1259203!2d-103.96976330625!3d21.171811800000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x842bb9bd36229563%3A0xd2e77d3c51be7f91!2sTerraza%20Las%20Monarcas!5e0!3m2!1ses!2smx!4v1783891128789!5m2!1ses!2smx" 
                         style="width: 100%; border-radius: 10px; border:0;" 
                         allowfullscreen="" 
                         loading="lazy">
                     </iframe>
                     
-                    <a href="https://maps.app.goo.gl/vA8T6v2z7K8m2K8m6" target="_blank" class="btn-gold" style="display: inline-block; margin-top: 25px; width: auto; padding: 12px 30px; text-decoration: none; font-size: 13px;">
+                    <a href="https://www.google.com/maps?ll=21.171812,-101.662634&z=7&t=m&hl=es&gl=MX&mapclient=embed&cid=15197253165607976849" target="_blank" class="btn-gold" style="display: inline-block; margin-top: 25px; width: auto; padding: 12px 30px; text-decoration: none; font-size: 13px;">
                         <i class="fas fa-map-marker-alt"></i> ABRIR EN GOOGLE MAPS
                     </a>
                 </div>
@@ -203,20 +284,23 @@
         </section>
 
         <section id="mesa-regalos" class="container reveal">
-            <h2 class="cormorant" style="font-size: 36px;">Mesa de Regalos</h2>
-            <p style="margin-bottom: 30px;">Tu presencia es nuestro mejor regalo, pero si deseas tener un detalle:</p>
-            <div class="gift-buttons-container">
-                <a href="https://www.amazon.com.mx/wedding/share/Cynthia-y-Val-2026" target="_blank" class="btn-gold" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-                    <i class="fab fa-amazon"></i> AMAZON
-                </a>
-                <a href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/51971551" target="_blank" class="btn-gold" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-                    <i class="fas fa-shopping-bag"></i> LIVERPOOL
-                </a> 
-                <button onclick="openModal()" class="btn-gold" style="cursor: pointer; display: inline-flex; align-items: center; gap: 8px; border: none; font-family: inherit; font-size: inherit;">
-                    <i class="fas fa-money-bill-wave"></i> REGALO EN EFECTIVO
+            <h2 class="cormorant" style="font-size: 36px;">Mesa de regalos</h2>
+            <p style="margin-bottom: 30px;">Tu presencia es nuestro mejor regalo, pero si deseas tener un detalle con nosotras:</p>
+            <section class="polaroid-section">
+            <div class="polaroid-frame">
+                <img src="img/montaje.jpg" alt="Val y Cyn">
+            </div>
+            <div class="polaroid-text">
+                <p class="polaroid-quote"> 
+                    <br>Ayúdanos a llegar a nuestra próxima aventura, <b>LA PATAGONIA</b>
+                    <br>
+                    <br> Todo pesito cuenta. ¡Gracias por ser parte de nuestros sueños!
+                </p>
+                <button onclick="openModal()" class="btn-gold-custom">
+                    <i class="fas fa-money-bill-wave"></i> TRANSFERENCIA
                 </button>
             </div>
-            <div id="bankModal" class="modal">
+                <div id="bankModal" class="modal">
                 <div class="modal-content">
                     <span class="close-modal" onclick="closeModal()">&times;</span>
                     <h3 class="cormorant" style="font-size: 28px; color: #b8926a; margin-top: 15px;">Datos Bancarios</h3>
@@ -231,50 +315,110 @@
                 </div>
             </div>
         </section>
+            <p> Otras opciones:</p>
 
-        <section id="vestimenta" class="container reveal">
-             <h2 class="cormorant" style="font-size: 36px;">Dress Code</h2>
-            <p style="margin-bottom: 30px;">Inspiración para tu outfit (Formal / Cocktail)</p>
-            <div class="pinterest-wrapper" style="max-width: 6000px; margin: 1 auto;">
-                <a data-pin-do="embedBoard" data-pin-board-width="auto" data-pin-scale-height="400" data-pin-scale-width="80" href="https://mx.pinterest.com/edithpema/wedding-inspo-outfit"></a>
+            <div class="gift-buttons-container">
+                <a href="https://www.amazon.com.mx/wedding/share/Cynthia-y-Val-2026" class="btn-gold">
+                    <i class="fab fa-amazon"></i> AMAZON
+                </a>
+                <a href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/51971551" class="btn-gold">
+                    <i class="fa fa-shopping-bag"></i> LIVERPOOL
+                </a>
             </div>
         </section>
 
-        <section id="rsvp" class="container reveal" style="background: #f9f7f2;">
-            <h2 class="cormorant" style="font-size: 36px;">Confirmar Asistencia</h2>
-            <p style="margin-bottom: 30px;">Por favor confirma antes del 1 de Diciembre</p>
+        <section id="vestimenta" class="container reveal">
+            <div class="card-estilo-comun">
+                 <h2 class="cormorant" style="font-size: 36px;">Dresscode</h2>
+                <p style="line-height: 1.6; margin-bottom: 25px;"> <b>Formal,</b> los colores blanco y similares están reservados para las novias. </i>
+                </p>
+
+                <div style="max-width: 500px; margin: 0 auto; overflow: hidden;">
+                    <img src="img/dresscode.png" alt="Dress Code Inspiración" style="width: 100%; height: auto; display: block; transition: transform 0.5s ease;">
+                </div>
+            </div>
+        </section>
+
+
+        <section id="rsvp" class="container reveal">
+            <h2 class="cormorant" style="font-size: 36px;">Confirmar asistencia</h2>
+            
+            <p id="pases-mensaje" style="font-weight: bold; color: var(--dorado); font-size: 18px; margin-bottom: 10px;">
+                Cargando información de tu invitación...
+            </p>
+
+            <p style="margin-bottom: 30px;"> <b  style="color: var(--verde)">Tienes hasta el <b style="font-size: 1px; color:var(--oscuro)">26 de septiembre</b> para confirmar tu asistencia. ¡Nos encantará disfrutar contigo este día tan especial!</p>
+
             <form id="rsvpForm">
+                <input type="hidden" name="pases_asignados" id="input-pases" value="1">
+                
                 <input type="text" name="nombre" placeholder="Nombre completo" required>
-                <select name="asistencia" required>
+                
+                <select name="asistencia" id="select-asistencia" required>
                     <option value="" disabled selected>¿Asistirás?</option>
                     <option value="Si">Sí, ¡con mucho gusto!</option>
                     <option value="No">Lo siento, no puedo</option>
                 </select>
-                <textarea name="mensaje" placeholder="¿Alguna alergia o mensaje para nosotros?"></textarea>
-                <button type="submit" id="btnEnviar" class="btn-gold">Confirmar ahora</button>
+                <select name="cantidad_confirmada" id="select-cantidad-asistentes" style="display:none; margin-top: 10px; width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+                    <option value="" disabled selected>¿Cuántos asistirán?</option>
+                </select>
+
+                <textarea name="mensaje" placeholder="¿Tienes algún mensaje para nosotras?"></textarea>
+                <button type="submit" id="btnEnviar" class="btn-gold-custom">Confirmar ahora</button>
             </form>
             <p id="success-msg" style="display:none; color: #4a7c44; font-weight: bold; margin-top: 20px;">
                 <i class="fas fa-check-circle"></i> ¡Confirmación enviada con éxito!
             </p>
         </section>
 
-        <footer>
-            <p>© Todos los derechos reservados 2026</p>
-            <p style="margin-top: 10px; font-size: 8px; opacity: 0.5;">C & V</p>
-        </footer>
-
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        // Función para abrir el sobre
+
         function abrirSobre() {
             document.getElementById('envelope-overlay').style.transform = "translateY(-100%)";
-            // Activa las animaciones de aparición
             setTimeout(reveal, 500);
+            const audio = document.getElementById('musica');
+            audio.play();
+            document.getElementById('icono-musica').className = "fas fa-pause";
         }
 
-        // Swiper (Galería)
+        function toggleMusica() {
+            const audio = document.getElementById('musica');
+            const icono = document.getElementById('icono-musica');
+            if (audio.paused) {
+                audio.play();
+                icono.className = "fas fa-pause";
+            } else {
+                audio.pause();
+                icono.className = "fas fa-music";
+            }
+        }
+        function openModal() {
+            const modal = document.getElementById("bankModal");
+            modal.style.display = "flex";
+            document.body.style.overflow = "hidden"; 
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById("bankModal");
+            modal.style.display = "none";
+            // Restaura el scroll
+            document.body.style.overflow = "auto";
+        }
+        
+        function copyClabe() {
+            const clabe = document.getElementById("clabe-number").innerText;
+            navigator.clipboard.writeText(clabe).then(() => {
+                const btn = document.querySelector(".btn-copy");
+                btn.innerHTML = '<i class="fas fa-check"></i> ¡Copiado!';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="far fa-copy"></i> Copiar CLABE';
+                }, 2000);
+            });
+        }
+
         const swiper = new Swiper(".mySwiper", {
             effect: "cards",
             grabCursor: true,
@@ -282,7 +426,6 @@
             mousewheel: { invert: false },
         });
 
-        // Cuenta Regresiva
         const targetDate = new Date("December 26, 2026 15:00:00").getTime();
         function updateTimer() {
             const now = new Date().getTime();
@@ -302,7 +445,6 @@
         setInterval(updateTimer, 1000);
         updateTimer();
 
-        // Scroll Reveal
         function reveal() {
             const reveals = document.querySelectorAll(".reveal");
             reveals.forEach(el => {
@@ -312,54 +454,76 @@
         }
         window.addEventListener("scroll", reveal);
 
-        // RSVP Logic
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzB2jQto78RkV7mRYgqTcATH2lQNiK-U_LiT9VjHuUBM363mOL_wKbPqXvHVjl35Pm8AQ/exec';
-        const form = document.getElementById('rsvpForm');
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            const btn = document.getElementById('btnEnviar');
-            btn.innerText = "Registrando...";
-            btn.disabled = true;
+        function configurarInvitacion() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const numPases = parseInt(urlParams.get('p')) || 1;
             
-            fetch(scriptURL, { method: 'POST', body: new FormData(form), mode: 'no-cors' })
-                .then(() => {
-                    document.getElementById('success-msg').style.display = 'block';
-                    form.reset();
-                    btn.innerText = "Confirmar ahora";
-                    btn.disabled = false;
-                })
-                .catch(() => {
-                    alert("Hubo un error al enviar. Por favor intenta de nuevo.");
-                    btn.disabled = false;
-                    btn.innerText = "Confirmar ahora";
-                });
-        });
+            const txtMensaje = document.getElementById('pases-mensaje'); 
+            const inputPases = document.getElementById('input-pases');  
+            const selectCantidad = document.getElementById('select-cantidad-asistentes');
+            const selectAsistencia = document.getElementById('select-asistencia'); 
+            
+            inputPases.value = numPases;
 
-        function openModal() {
-            document.getElementById("bankModal").style.display = "block";
-        }
-        
-        function closeModal() {
-            document.getElementById("bankModal").style.display = "none";
-        }
-        
-        function copyClabe() {
-            const clabe = document.getElementById("clabe-number").innerText;
-            navigator.clipboard.writeText(clabe).then(() => {
-                const btn = document.querySelector(".btn-copy");
-                btn.innerHTML = '<i class="fas fa-check"></i> ¡Copiado!';
-                setTimeout(() => {
-                    btn.innerHTML = '<i class="far fa-copy"></i> Copiar CLABE';
-                }, 2000);
+            if (numPases > 1) {
+                txtMensaje.innerText = `Hemos reservado ${numPases} lugares para tu familia.`;
+            } else {
+                txtMensaje.innerText = `Hemos reservado 1 lugar especial para ti.`;
+            }
+
+            selectAsistencia.addEventListener('change', function() {
+                if (this.value === 'Si') {
+                    selectCantidad.style.display = "block";
+                    selectCantidad.required = true;
+                    
+                    selectCantidad.innerHTML = `<option value="" disabled selected>¿Cuántos asistirán?</option>`;
+                    for (let i = 1; i <= numPases; i++) {
+                        let option = document.createElement("option");
+                        option.value = i;
+                        option.text = i + (i === 1 ? " persona" : " personas");
+                        selectCantidad.appendChild(option);
+                    }
+                } else {
+                    selectCantidad.style.display = "none";
+                    selectCantidad.required = false;
+                }
             });
         }
-        
-        window.addEventListener("click", function(event) {
-            let modal = document.getElementById("bankModal");
-            if (event.target == modal) {
-                closeModal();
-            }
-        });
+
+    window.addEventListener('DOMContentLoaded', configurarInvitacion);
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyHTdiAJMgEsnundS2TLRTnn3r878PUXMhyJZuC4XT_MP1PSwo5VEK_oUh4CF6YsTMOmQ/exec';
+    const form = document.getElementById('rsvpForm');
+
+    form.addEventListener('submit', e => {
+    e.preventDefault();
+    
+    const btn = document.getElementById('btnEnviar');
+    
+    btn.innerText = "Registrando...";
+    btn.disabled = true;
+    btn.style.opacity = "0.7";
+    btn.style.cursor = "not-allowed";
+    
+        fetch(scriptURL, { method: 'POST', body: new FormData(form), mode: 'no-cors' })
+            .then(() => {
+                document.getElementById('success-msg').style.display = 'block';
+                form.reset();
+                
+                document.getElementById('select-cantidad-asistentes').style.display = "none";
+                
+                btn.innerText = "Confirmar ahora";
+                btn.disabled = false;
+                btn.style.opacity = "1";
+                btn.style.cursor = "pointer";
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Hubo un error al enviar. Por favor intenta de nuevo.");
+                btn.disabled = false;
+                btn.innerText = "Confirmar ahora";
+                btn.style.opacity = "1";
+            });
+    })
     </script>
 </body>
 </html>
