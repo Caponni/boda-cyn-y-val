@@ -131,7 +131,6 @@
 }
         .swiper-slide { background: white; padding: 10px 10px 45px 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-radius: 2px; }
         .swiper-slide img { width: 100%; height: 100%; object-fit: cover; border: 1px solid #eee; }
-        .swiper-button-next, .swiper-button-prev { color: var(--verde); display: none; }
         #programa { position: relative; }
         .timeline-container { position: relative; max-width: 800px; margin: 0 auto; padding: 40px 0; }
         .timeline-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: #e0e0e0; transform: translateX(-50%); z-index: 1; }
@@ -224,8 +223,6 @@
                     <div class="swiper-slide"><img src="img/7.jpg"></div>
                     <div class="swiper-slide"><img src="img/8.jpg"></div>
                 </div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
             </div>
         </section>
 
@@ -413,16 +410,11 @@
             });
         }
 
-        // Inicialización de Swiper (Mantiene tus tarjetas intactas)
         const swiper = new Swiper(".mySwiper", {
             effect: "cards",
             grabCursor: true,
             observer: true,
             observeParents: true,
-            navigation: { 
-                nextEl: ".swiper-button-next", 
-                prevEl: ".swiper-button-prev" 
-            },
         });
 
         // Cuenta regresiva
@@ -445,7 +437,6 @@
         setInterval(updateTimer, 1000);
         updateTimer();
 
-        // Control de animación al hacer scroll optimizado
         let isScrolling = false;
         function reveal() {
             if (!isScrolling) {
@@ -462,7 +453,6 @@
         }
         window.addEventListener("scroll", reveal, { passive: true });
 
-        // Configuración de pases y formulario RSVP
         function configurarInvitacion() {
             const urlParams = new URLSearchParams(window.location.search);
             const numPases = parseInt(urlParams.get('p')) || 1;
