@@ -160,6 +160,10 @@
             .timer-box-simple label { font-size: 15px; }
             .cover-text-top { top: 3%; }
             .timer-container { gap: 15px; }
+            .swiper-slide, .card-estilo-comun, .map-card-single {
+                transform: translateZ(0);
+                backface-visibility: hidden;
+            }
         }
 
     </style>
@@ -429,9 +433,8 @@
        const swiper = new Swiper(".mySwiper", {
     effect: "cards",
     grabCursor: true,
-    // Estas líneas evitan que el carrusel "secuestre" el scroll de la pantalla
-    touchEventsTarget: 'wrapper',
-    resistanceRatio: 0.85,
+    observer: true,
+    observeParents: true,
     navigation: { 
         nextEl: ".swiper-button-next", 
         prevEl: ".swiper-button-prev" 
@@ -458,13 +461,21 @@
         updateTimer();
 
         function reveal() {
-            const reveals = document.querySelectorAll(".reveal");
-            reveals.forEach(el => {
-                const rect = el.getBoundingClientRect();
-                if (rect.top < window.innerHeight - 50) el.classList.add("active");
-            });
+           let isScrolling = false;
+        function reveal() {
+            if (!isScrolling) {
+                window.requestAnimationFrame(() => {
+                    const reveals = document.querySelectorAll(".reveal");
+                    reveals.forEach(el => {
+                        const rect = el.getBoundingClientRect();
+                        if (rect.top < window.innerHeight - 50) el.classList.add("active");
+                    });
+                    isScrolling = false;
+                });
+                isScrolling = true;
+            }
         }
-        window.addEventListener("scroll", reveal);
+        window.addEventListener("scroll", reveal, { passive: true });
 
         function configurarInvitacion() {
             const urlParams = new URLSearchParams(window.location.search);
